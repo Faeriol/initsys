@@ -17,3 +17,4 @@ def dlAlias(server):
 print "Let's enable Faeriol's config on this machine: " +sys.argv[1] 
 copyKey(sys.argv[1])
 dlAlias(sys.argv[1])
+print "DONE"
