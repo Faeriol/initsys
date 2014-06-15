@@ -3,17 +3,17 @@
 import os
 import sys
 
-#cat ~/.ssh/id_rsa.pub | ssh user@machine "mkdir ~/.ssh; cat >> ~/.ssh/authorized_keys"
-
 def copyKey(server):
-	os.system("cat ~/.ssh/id_rsa.pub | ssh " +server +" 'mkdir ~/.ssh; cat >> ~/.ssh/authorized_keys; chmod -R 0700 ~/.ssh'")
-	#os.system("ssh " +server +" '[ -d ~/.ssh ] || mkdir -p ~/.ssh && chmod 0700 ~/.ssh'")
-	#os.system("scp ~/.ssh/id_rsa.pub " +server +":~/.ssh/authorized_keys")
+	pkey = os.popen('cat ~/.ssh/id_rsa.pub').read()
+	os.system("ssh " +server +" '[ -d ~/.ssh ] || mkdir ~/.ssh; grep -q \"" +pkey +"\" ~/.ssh/authorized_keys || echo \"" +pkey +"\" >> ~/.ssh/authorized_keys; chmod -R 0700 ~/.ssh'")
 
-def copyAlias(server):
-	os.system("scp ~/.bash_alias " +server +":~/.bash_alias")
+def dlAlias(server):
+	myAliasFile = "https://skykeep.faeriol.me/faeriol/initsys/raw/master/.bash_alias"
+	os.system("ssh " +server +" wget -N " +myAliasFile)
+	print "Downloaded fresh copy of bash_alias file, lets now set it in place"
+	os.system("ssh " +server +" '[ -f ~/.bashrc ] && (grep -q \"source .bash_alias\" .bashrc || echo \"source .bash_alias\" >> ~/.bashrc)'")
+	os.system("ssh " +server +" '[ -f ~/.profile ] && (grep -q \"source .bash_alias\" .profile || echo \"source .bash_alias\" >> ~/.profile)'")
 
-
-print "Let's enable Faeriol's config on this machine: " +sys.argv[1]
+print "Let's enable Faeriol's config on this machine: " +sys.argv[1] 
 copyKey(sys.argv[1])
-copyAlias(sys.argv[1])
+dlAlias(sys.argv[1])
