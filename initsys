@@ -1,0 +1,19 @@
+#! /usr/bin/env python
+
+import os
+import sys
+
+#cat ~/.ssh/id_rsa.pub | ssh user@machine "mkdir ~/.ssh; cat >> ~/.ssh/authorized_keys"
+
+def copyKey(server):
+	os.system("cat ~/.ssh/id_rsa.pub | ssh " +server +" 'mkdir ~/.ssh; cat >> ~/.ssh/authorized_keys; chmod -R 0700 ~/.ssh'")
+	#os.system("ssh " +server +" '[ -d ~/.ssh ] || mkdir -p ~/.ssh && chmod 0700 ~/.ssh'")
+	#os.system("scp ~/.ssh/id_rsa.pub " +server +":~/.ssh/authorized_keys")
+
+def copyAlias(server):
+	os.system("scp ~/.bash_alias " +server +":~/.bash_alias")
+
+
+print "Let's enable Faeriol's config on this machine: " +sys.argv[1]
+copyKey(sys.argv[1])
+copyAlias(sys.argv[1])
