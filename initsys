@@ -14,7 +14,13 @@ def dlAlias(server):
 	os.system("ssh " +server +" '[ -f ~/.bashrc ] && (grep -q \"source .bash_alias\" .bashrc || echo \"source .bash_alias\" >> ~/.bashrc)'")
 	os.system("ssh " +server +" '[ -f ~/.profile ] && (grep -q \"source .bash_alias\" .profile || echo \"source .bash_alias\" >> ~/.profile)'")
 
-print "Let's enable Faeriol's config on this machine: " +sys.argv[1] 
-copyKey(sys.argv[1])
-dlAlias(sys.argv[1])
-print "DONE"
+def usage():
+	print "You need to specify a machine name"
+
+if len(sys.argv) < 2 :
+	usage()
+else :
+	print "Let's enable Faeriol's config on this machine: " +sys.argv[1] 
+	copyKey(sys.argv[1])
+	dlAlias(sys.argv[1])
+	print "DONE"
