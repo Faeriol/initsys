@@ -4,23 +4,29 @@ import os
 import sys
 
 def copyKey(server):
-	pkey = os.popen('cat ~/.ssh/id_rsa.pub').read()
-	os.system("ssh " +server +" '[ -d ~/.ssh ] || mkdir ~/.ssh; grep -q \"" +pkey +"\" ~/.ssh/authorized_keys || echo \"" +pkey +"\" >> ~/.ssh/authorized_keys; chmod -R 0700 ~/.ssh'")
+    pkey = os.popen('cat ~/.ssh/id_rsa.pub').read()
+    os.system("ssh " +server +" '[ -d ~/.ssh ] || mkdir ~/.ssh; grep -s -q \"" +pkey +"\" ~/.ssh/authorized_keys || echo \"" +pkey +"\" >> ~/.ssh/authorized_keys; chmod -R 0700 ~/.ssh'")
 
 def dlAlias(server):
-	myAliasFile = "https://skykeep.faeriol.me/faeriol/initsys/raw/master/.bash_alias"
-	os.system("ssh " +server +" wget -N " +myAliasFile)
-	print "Downloaded fresh copy of bash_alias file, lets now set it in place"
-	os.system("ssh " +server +" '[ -f ~/.bashrc ] && (grep -q \"source .bash_alias\" .bashrc || echo \"source .bash_alias\" >> ~/.bashrc)'")
-	os.system("ssh " +server +" '[ -f ~/.profile ] && (grep -q \"source .bash_alias\" .profile || echo \"source .bash_alias\" >> ~/.profile)'")
+    myAliasFile = "https://skykeep.faeriol.me/faeriol/initsys/raw/master/bash_alias"
+    os.system("ssh " +server +" wget -O .bash_alias -N " +myAliasFile)
+    print "Downloaded fresh copy of bash_alias file, lets now set it in place"
+    os.system("ssh " +server +" '[ -f ~/.bashrc ] && (grep -s -q \"source .bash_alias\" .bashrc || echo \"source .bash_alias\" >> ~/.bashrc)'")
+    os.system("ssh " +server +" '[ -f ~/.profile ] && (grep -s -q \"source .bash_alias\" .profile || echo \"source .bash_alias\" >> ~/.profile)'")
+
+def dlVimrc(server):
+    myVimrc = "https://skykeep.faeriol.me/faeriol/initsys/raw/master/vimrc"
+    os.system("ssh " +server +" wget -O .vimrc -N " +myVimrc)
+    print "Downloaded fresh copy of vimrc file, lets now set it in place"
 
 def usage():
-	print "You need to specify a machine name"
+    print "You need to specify a machine name"
 
 if len(sys.argv) < 2 :
-	usage()
+    usage()
 else :
-	print "Let's enable Faeriol's config on this machine: " +sys.argv[1] 
-	copyKey(sys.argv[1])
-	dlAlias(sys.argv[1])
-	print "DONE"
+    print "Let's enable Faeriol's config on this machine: " +sys.argv[1] 
+    copyKey(sys.argv[1])
+    dlAlias(sys.argv[1])
+    dlVimrc(sys.argv[1])
+    print "DONE"

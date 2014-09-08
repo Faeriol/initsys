@@ -15,14 +15,13 @@ Grab the script, and run
 ```
 
 This will setup your ssh key and then dl the specified bash_alias file.
-You may want to edit the "myAliasFile" variable
+It also downloads the vimrc file
+I generate the bash_alias and vimrc from the ones I have locally at time of commit
 
 ## Future
 
 Here are a few features I'd like to add if I have time/need to work on this script again:
 
-*	Autoupdate
-*	Push the different config file (bash_alias) back to a server
 *	Whatever seems fit
 
 Sadly, since I seem to always be SOOOOOO busy, I might not even have time to touch the script ever again
