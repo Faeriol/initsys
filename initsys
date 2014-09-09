@@ -8,14 +8,14 @@ def copyKey(server):
     os.system("ssh " +server +" '[ -d ~/.ssh ] || mkdir ~/.ssh; grep -s -q \"" +pkey +"\" ~/.ssh/authorized_keys || echo \"" +pkey +"\" >> ~/.ssh/authorized_keys; chmod -R 0700 ~/.ssh'")
 
 def dlAlias(server):
-    myAliasFile = "https://skykeep.faeriol.me/faeriol/initsys/raw/master/bash_alias"
+    myAliasFile = "https://raw.githubusercontent.com/Faeriol/initsys/master/bash_alias"
     os.system("ssh " +server +" wget -O .bash_alias -N " +myAliasFile)
     print "Downloaded fresh copy of bash_alias file, lets now set it in place"
     os.system("ssh " +server +" '[ -f ~/.bashrc ] && (grep -s -q \"source .bash_alias\" .bashrc || echo \"source .bash_alias\" >> ~/.bashrc)'")
     os.system("ssh " +server +" '[ -f ~/.profile ] && (grep -s -q \"source .bash_alias\" .profile || echo \"source .bash_alias\" >> ~/.profile)'")
 
 def dlVimrc(server):
-    myVimrc = "https://skykeep.faeriol.me/faeriol/initsys/raw/master/vimrc"
+    myVimrc = "https://raw.githubusercontent.com/Faeriol/initsys/master/vimrc"
     os.system("ssh " +server +" wget -O .vimrc -N " +myVimrc)
     print "Downloaded fresh copy of vimrc file, lets now set it in place"
 
