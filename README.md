@@ -18,6 +18,11 @@ This will setup your ssh key and then dl the specified bash_alias file.
 It also downloads the vimrc file
 I generate the bash_alias and vimrc from the ones I have locally at time of commit
 
+## Installation
+
+Of course it might be more efficient to have the script in your path so you can call it directly.
+Just cp it over, something along the lines of: "sudo cp initsys /usr/local/bin/initsys"
+
 ## Future
 
 Here are a few features I'd like to add if I have time/need to work on this script again:
