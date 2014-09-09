@@ -20,7 +20,7 @@ def dlVimrc(server):
     print "Downloaded fresh copy of vimrc file, lets now set it in place"
 
 def usage():
-    print "You need to specify a machine name"
+    print "initsys <machineToInit>"
 
 if len(sys.argv) < 2 :
     usage()
