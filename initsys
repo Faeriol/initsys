@@ -3,9 +3,11 @@
 import os
 import sys
 
-def copyKey(server):
-    pkey = os.popen('cat ~/.ssh/id_rsa.pub').read()
-    os.system("ssh " +server +" '[ -d ~/.ssh ] || mkdir ~/.ssh; grep -s -q \"" +pkey +"\" ~/.ssh/authorized_keys || echo \"" +pkey +"\" >> ~/.ssh/authorized_keys; chmod -R 0700 ~/.ssh'")
+def copyKey(server, githubUser):
+    key = "https://github.com/" +githubUser +".keys"
+    command = "ssh " +server 
+    command += " '[ -d ~/.ssh ] || mkdir ~/.ssh; wget -O ~/.ssh/authorized_keys -N " +key +"; chmod -R 0700 ~/.ssh'"
+    os.system(command)
 
 def dlAlias(server):
     myAliasFile = "https://raw.githubusercontent.com/Faeriol/initsys/master/bash_alias"
@@ -20,13 +22,13 @@ def dlVimrc(server):
     print "Downloaded fresh copy of vimrc file, lets now set it in place"
 
 def usage():
-    print "initsys <machineToInit>"
+    print "initsys <machineToInit> <githubUser>"
 
-if len(sys.argv) < 2 :
+if len(sys.argv) < 3 :
     usage()
 else :
-    print "Let's enable Faeriol's config on this machine: " +sys.argv[1] 
-    copyKey(sys.argv[1])
+    print "Let's enable Faeriol's config on this machine: " +sys.argv[1] +" with github user: " +sys.argv[2] 
+    copyKey(sys.argv[1], sys.argv[2])
     dlAlias(sys.argv[1])
     dlVimrc(sys.argv[1])
     print "DONE"
