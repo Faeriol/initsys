@@ -21,6 +21,11 @@ def dlVimrc(server):
     os.system("ssh " +server +" wget -O .vimrc -N " +myVimrc)
     print "Downloaded fresh copy of vimrc file, lets now set it in place"
 
+def dlScreenrc(server):
+    myScreen = "https://raw.githubusercontent.com/Faeriol/initsys/master/screenrc"
+    os.system("ssh " +server +" wget -O .screenrc -N " +myScreenrc)
+    print "Downloaded fresh copy of screenrc file."
+
 def usage():
     print "initsys <machineToInit> <githubUser>"
 
@@ -31,4 +36,5 @@ else :
     copyKey(sys.argv[1], sys.argv[2])
     dlAlias(sys.argv[1])
     dlVimrc(sys.argv[1])
+    dlScreenrc(sys.argv[1])
     print "DONE"
