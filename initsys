@@ -22,7 +22,7 @@ def dlVimrc(server):
     print "Downloaded fresh copy of vimrc file, lets now set it in place"
 
 def dlScreenrc(server):
-    myScreen = "https://raw.githubusercontent.com/Faeriol/initsys/master/screenrc"
+    myScreenrc = "https://raw.githubusercontent.com/Faeriol/initsys/master/screenrc"
     os.system("ssh " +server +" wget -O .screenrc -N " +myScreenrc)
     print "Downloaded fresh copy of screenrc file."
 
