@@ -1,9 +1,13 @@
 #! /usr/bin/env python
+"""initsys helps you init your remote system.
+The base script does the very simple stuff.
+"""
 
 import os
 import sys
 
 def copyKey(server, githubUser):
+    """Execute from local for bootstrap... for now"""
     key = "https://github.com/" +githubUser +".keys"
     command = "ssh " +server 
     command += " '[ -d ~/.ssh ] || mkdir ~/.ssh; wget -O ~/.ssh/authorized_keys -N " +key +"; chmod -R 0700 ~/.ssh'"
@@ -15,6 +19,16 @@ def dlAlias(server):
     print "Downloaded fresh copy of bash_alias file, lets now set it in place"
     os.system("ssh " +server +" '[ -f ~/.bashrc ] && (grep -s -q \"source .bash_alias\" .bashrc || echo \"source .bash_alias\" >> ~/.bashrc)'")
     os.system("ssh " +server +" '[ -f ~/.profile ] && (grep -s -q \"source .bash_alias\" .profile || echo \"source .bash_alias\" >> ~/.profile)'")
+
+def dlLocalAlias():
+    myAliasFile = "https://raw.githubusercontent.com/Faeriol/initsys/master/bash_alias"
+    os.system("wget -O .bash_alias -N " +myAliasFile)
+    os.system("'[ -f ~/.bashrc ] && (grep -s -q \"source .bash_alias\" .bashrc || echo \"source .bash_alias\" >> ~/.bashrc)'")
+    os.system("'[ -f ~/.profile ] && (grep -s -q \"source .bash_alias\" .profile || echo \"source .bash_alias\" >> ~/.profile)'")
+
+def dlInitsys(server):
+    myInitsys = "https://raw.githubusercontent.com/Faeriol/initsys/master/initsys"
+    os.system("ssh " +server +" wget -O initsys -N " +myInitsys)
 
 def dlVimrc(server):
     myVimrc = "https://raw.githubusercontent.com/Faeriol/initsys/master/vimrc"
@@ -31,10 +45,14 @@ def usage():
 
 if len(sys.argv) < 3 :
     usage()
+elif sys.argv[1] == "remote":
+    dlLocalAlias()
 else :
     print "Let's enable Faeriol's config on this machine: " +sys.argv[1] +" with github user: " +sys.argv[2] 
     copyKey(sys.argv[1], sys.argv[2])
-    dlAlias(sys.argv[1])
-    dlVimrc(sys.argv[1])
-    dlScreenrc(sys.argv[1])
+    dlInitsys(sys.argv[1])
+    os.system("ssh " +sys.argv[1] +" remote")
+    #dlAlias(sys.argv[1])
+    #dlVimrc(sys.argv[1])
+    #dlScreenrc(sys.argv[1])
     print "DONE"
