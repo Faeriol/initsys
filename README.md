@@ -11,12 +11,13 @@ WILL fail if you don't have a least one of the files in your $HOME
 Grab the script, and run
 
 ```
-"initsys my.server.com"
+"initsys my.server.com yourGithubHandle"
 ```
 
 This will setup your ssh key and then dl the specified bash_alias file.
-It also downloads the vimrc file
-I generate the bash_alias and vimrc from the ones I have locally at time of commit
+It also downloads the screenrc and vimrc files
+
+//I generate the bash_alias and vimrc from the ones I have locally at time of commit (still true?)
 
 ## Installation
 
@@ -27,6 +28,7 @@ Just cp it over, something along the lines of: "sudo cp initsys /usr/local/bin/i
 
 Here are a few features I'd like to add if I have time/need to work on this script again:
 
-*	Whatever seems fit
+*	Making this modular and not dependant on my own configuration.
+*   Transforming initsys proper into a small core that uses user provided config modules
 
 Sadly, since I seem to always be SOOOOOO busy, I might not even have time to touch the script ever again

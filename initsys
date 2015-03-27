@@ -1,38 +1,43 @@
 #! /usr/bin/env python
 """initsys helps you init your remote system.
-The base script does the very simple stuff.
+The base script connects to the remote machine.
+It then proceedes to download your key and call itself to initialize your settings
+Usage:
+initsys [remotemachine] [githubhandle]\tWith remotemachine being the ssh connect string
 """
 
 import os
 import sys
 
+data = "https://raw.githubusercontent.com/Faeriol/initsys-data/master/"
+
 def copyKey(server, githubUser):
     """Execute from local for bootstrap... for now"""
     key = "https://github.com/" +githubUser +".keys"
     command = "ssh " +server 
-    command += " '[ -d ~/.ssh ] || mkdir ~/.ssh; wget -O ~/.ssh/authorized_keys -N " +key +"; chmod -R 0700 ~/.ssh'"
+    command += " '[ -d ~/.ssh ] || mkdir ~/.ssh; curl -o ~/.ssh/authorized_keys " +key +"; chmod -R 0700 ~/.ssh'"
     os.system(command)
 
 def dlLocalAlias():
-    myAliasFile = "https://raw.githubusercontent.com/Faeriol/initsys/master/bash_alias"
-    os.system("wget -O .bash_alias -N " +myAliasFile)
+    myAliasFile = data +"bash_alias"
+    os.system("curl -o .bash_alias " +myAliasFile)
     os.system("'[ -f ~/.bashrc ] && (grep -s -q \"source .bash_alias\" .bashrc || echo \"source .bash_alias\" >> ~/.bashrc)'")
     os.system("'[ -f ~/.profile ] && (grep -s -q \"source .bash_alias\" .profile || echo \"source .bash_alias\" >> ~/.profile)'")
 
 def dlInitsys(server):
     myInitsys = "https://raw.githubusercontent.com/Faeriol/initsys/master/initsys"
-    os.system("ssh " +server +" wget -O initsys -N " +myInitsys)
+    os.system("ssh " +server +" curl -o initsys " +myInitsys)
 
 def dlLocalVimrc():
-    myVimrc = "https://raw.githubusercontent.com/Faeriol/initsys/master/vimrc"
-    os.system("wget -O .vimrc -N " +myVimrc)
+    myVimrc = data +"vimrc"
+    os.system("curl -o .vimrc " +myVimrc)
 
 def dlLocalScreenrc():
-    myScreenrc = "https://raw.githubusercontent.com/Faeriol/initsys/master/screenrc"
-    os.system("wget -O .screenrc -N " +myScreenrc)
+    myScreenrc = data +"screenrc"
+    os.system("curl -o .screenrc " +myScreenrc)
 
 def usage():
-    print "initsys <machineToInit> <githubUser>"
+    print(__doc__)
 
 if __name__ == "__main__":
     if len(sys.argv) < 2 :
@@ -42,8 +47,8 @@ if __name__ == "__main__":
         dlLocalVimrc()
         dlLocalScreenrc()
     else :
-        print "Let's enable Faeriol's config on this machine: " +sys.argv[1] +" with github user: " +sys.argv[2] 
+        print("Let's enable Faeriol's config on this machine: " +sys.argv[1] +" with github user: " +sys.argv[2])
         copyKey(sys.argv[1], sys.argv[2])
         dlInitsys(sys.argv[1])
         os.system("ssh " +sys.argv[1] +" python ./initsys remote")
-        print "DONE"
+        print("DONE")
