@@ -24,9 +24,6 @@ def dlLocalAlias():
     home = os.path.expanduser("~")
     with open(home +"/.bashrc", 'a+') as brc:
         brc.write("\nsource .bash_alias\n")
-        
-    #os.system("'[ -f ~/.bashrc ] && (grep -s -q \"source .bash_alias\" .bashrc || echo \"source .bash_alias\" >> ~/.bashrc)'")
-    #os.system("'[ -f ~/.profile ] && (grep -s -q \"source .bash_alias\" .profile || echo \"source .bash_alias\" >> ~/.profile)'")
 
 def dlInitsys(server):
     myInitsys = "https://raw.githubusercontent.com/Faeriol/initsys/master/initsys"
