@@ -3,8 +3,7 @@
 The base script connects to the remote machine.
 It then proceedes to download your key and call itself to initialize your settings
 Usage:
-initsys [remotemachine] [githubhandle]\tWith remotemachine being the ssh connect string
-"""
+initsys [remotemachine] [githubhandle]\tWith remotemachine being the ssh connect string"""
 
 import os
 import sys
@@ -41,15 +40,18 @@ def usage():
     print(__doc__)
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2 :
+    if len(sys.argv) > 2 :
+        if sys.argv[1] == "remote":
+            dlLocalAlias()
+            dlLocalVimrc()
+            dlLocalScreenrc()
+        elif len(sys.argv) == 3:
+            print("Let's enable Faeriol's config on this machine: " +sys.argv[1] +" with github user: " +sys.argv[2])
+            copyKey(sys.argv[1], sys.argv[2])
+            dlInitsys(sys.argv[1])
+            os.system("ssh " +sys.argv[1] +" python ./initsys remote")
+            print("DONE")
+        else:
+            usage()
+    else:
         usage()
-    elif sys.argv[1] == "remote":
-        dlLocalAlias()
-        dlLocalVimrc()
-        dlLocalScreenrc()
-    else :
-        print("Let's enable Faeriol's config on this machine: " +sys.argv[1] +" with github user: " +sys.argv[2])
-        copyKey(sys.argv[1], sys.argv[2])
-        dlInitsys(sys.argv[1])
-        os.system("ssh " +sys.argv[1] +" python ./initsys remote")
-        print("DONE")
