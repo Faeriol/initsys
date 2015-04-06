@@ -26,8 +26,8 @@ def dlLocalAlias():
 
 def dlInitsys(server):
     myInitsys = "https://raw.githubusercontent.com/Faeriol/initsys/master/initsys"
-    os.system("ssh " +server +" curl -o initsys " +myInitsys +" && chmod +x initsys")
-
+    os.system("ssh " +server +" curl -o initsys " +myInitsys)
+    os.system("ssh " +server +" chmod +x initsys")
 def dlLocalVimrc():
     myVimrc = data +"vimrc"
     os.system("curl -o .vimrc " +myVimrc)
